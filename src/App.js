@@ -1,9 +1,10 @@
 import './App.scss';
+import RecipientsInput from './components/RecipientsInput/RecipientsInput';
 
 export default function App() {
   return (
     <div className="App">
-      { /** Recipients input component here */ }
+      <RecipientsInput />
     </div>
   );
 }
