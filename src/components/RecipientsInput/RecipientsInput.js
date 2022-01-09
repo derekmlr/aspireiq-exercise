@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import RecipientsSuggest from '../RecipientsSuggest/RecipientsSuggest';
 import './RecipientsInput.scss';
 
 export default function RecipientsInput() {
@@ -12,13 +13,24 @@ export default function RecipientsInput() {
     setCurrentValue(event.target.value);
   }
 
+  /**
+   * Adds a recipient email and renders a tag.
+   * @param tag Text to add.
+   */
+  const addTag = (tag) => {
+    console.log('add tag', tag);
+  }
+
   return (
     <div className="RecipientsInput-container">
-      <input
-          className="RecipientsInput-input"
-          placeholder="Enter recipients..."
-          value={currentValue}
-          onChange={handleChange} />
+      <div className="RecipientsInput-input-wrapper">
+        <input
+            className="RecipientsInput-input"
+            placeholder="Enter recipients..."
+            value={currentValue}
+            onChange={handleChange} />
+        <RecipientsSuggest currentValue={currentValue} addTag={addTag} />
+      </div>
     </div>
   )
 }

@@ -1,0 +1,10 @@
+.RecipientsSuggestItem {
+  cursor: pointer;
+  font-size: 14px;
+  line-height: 38px;
+  padding: 0 20px;
+
+  &:hover {
+    background: #EFF5F9;
+  }
+}
