@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import { ReactComponent as ErrorIcon } from '../../images/error-circle.svg';
 
 import './Recipient.scss';
