@@ -1,24 +1,51 @@
-import { useEffect, useState } from 'react';
-import mockEmails from '../../mocks/emails';
+import { useEffect, useRef, useState } from 'react';
+import { getEmailsList } from '../../api/emails';
 import RecipientsSuggestItem from '../RecipientsSuggestItem/RecipientsSuggestItem';
 
 import './RecipientsSuggest.scss';
 
 export default function RecipientsSuggest({ currentValue, addTag }) {
-  const [ emailList, setEmailList ] = useState([]);
+  const [ loading, setLoading ] = useState(true);
+  const [ emailsList, setEmailsList ] = useState([]);
+  const [ filteredEmailsList, setFilteredEmailsList ] = useState([]);
   const [ scrollStateClass, setScrollStateClass ] = useState('');
+  const listRef = useRef(null);
 
   useEffect(() => {
-    const filteredEmailList = mockEmails.filter(email => email.includes(currentValue));
-    setEmailList(filteredEmailList);
+    const fetchEmailsList = async () => {
+      setEmailsList(await getEmailsList());
+      setLoading(false);
+    }
+    fetchEmailsList();
+  }, []);
+
+  useEffect(() => {
+    setFilteredEmailsList(emailsList.filter(email => email.includes(currentValue)));
+    setTimeout(() => displayFades(), 10);
   }, [ currentValue ]);
 
+  // Previously I sent the API a value and have it respond with a filtered list.
+  // However, it would be a lot of unnecessary HTTP requests and possible race conditions.
+  //
+  // useEffect(() => {
+  //   const delayedTyping = setTimeout(() => {
+  //     const fetchEmailList = async () => {
+  //       setLoading(true);
+  //       setFilteredEmailList(await getEmailsListByValue(currentValue));
+  //       setLoading(false);
+  //       displayFades();
+  //     }
+  //     if (currentValue.trim() !== '') fetchEmailList();
+  //   }, 500);
+  //   return () => clearTimeout(delayedTyping);
+  // }, [ currentValue ]);
+
   /**
-   * Toggles the fade effect on scroll.
-   * @param event Scroll event object.
+   * Displays the right combination of top/bottom fades.
    */
-  const handleScrollEffect = (event) => {
-    const container = event.target;
+  const displayFades = () => {
+    const container = listRef.current;
+    if (!container) return;
     const atBottom = (container.scrollTop + container.offsetHeight) === container.scrollHeight;
     if (container.scrollTop > 0 && !atBottom) {
       setScrollStateClass('RecipientsSuggest-fade-topBottom');
@@ -29,16 +56,18 @@ export default function RecipientsSuggest({ currentValue, addTag }) {
     } else {
       setScrollStateClass('');
     }
-  }
+  };
 
   // Don't show if currentValue is blank.
   if (currentValue.trim() === '') return null;
 
   return (
-    <div className={`RecipientsSuggest-container ${scrollStateClass}`}>
+    <div className={`RecipientsSuggest-container ${loading ? '' : scrollStateClass}`}>
       <ul className="RecipientsSuggest-list"
-          onScroll={handleScrollEffect}>
-        {emailList.map((email, index) =>
+          onScroll={() => displayFades()}
+          ref={listRef}>
+        {loading && <li className="RecipientsSuggest-list-loading"><small>Loading...</small></li>}
+        {!loading && filteredEmailsList.map((email, index) =>
             <RecipientsSuggestItem key={index} value={email} handleClick={addTag} />)}
       </ul>
     </div>

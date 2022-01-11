@@ -1,4 +1,6 @@
-export default [
+import { mockApiResponse } from "../utils/mock";
+
+const emailsList = [
   'ebrekke@gmail.com',
   'rigoberto.weimann@schuppe.com',
   'ijakubowski@barton.com',
@@ -1000,3 +1002,21 @@ export default [
   'precious62@jacobi.com',
   'nicola.reichel@yahoo.com',
 ];
+
+/**
+ * Get the complete emails list.
+ * @returns Promise with emails array response.
+ */
+export const getEmailsList = async () => mockApiResponse(resolve => resolve(emailsList));
+
+/**
+ * Get an emails list filtered by provided value.
+ * @param value Text to filter email list by.
+ * @returns Promise with emails array response.
+ */
+export const getEmailsListByValue = async (value) => {
+  return mockApiResponse((resolve) => {
+    const filteredEmailList = emailsList.filter(email => email.includes(value));
+    resolve(filteredEmailList);
+  });
+};
