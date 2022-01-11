@@ -4,7 +4,7 @@ import RecipientsSuggestItem from '../RecipientsSuggestItem/RecipientsSuggestIte
 
 import './RecipientsSuggest.scss';
 
-export default function RecipientsSuggest({ currentValue, addTag }) {
+export default function RecipientsSuggest({ currentValue, addRecipient }) {
   const [ loading, setLoading ] = useState(true);
   const [ emailsList, setEmailsList ] = useState([]);
   const [ filteredEmailsList, setFilteredEmailsList ] = useState([]);
@@ -68,7 +68,7 @@ export default function RecipientsSuggest({ currentValue, addTag }) {
           ref={listRef}>
         {loading && <li className="RecipientsSuggest-list-loading"><small>Loading...</small></li>}
         {!loading && filteredEmailsList.map((email, index) =>
-            <RecipientsSuggestItem key={index} value={email} handleClick={addTag} />)}
+            <RecipientsSuggestItem key={index} value={email} handleClick={addRecipient} />)}
       </ul>
     </div>
   );

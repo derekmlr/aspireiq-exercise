@@ -1,0 +1,36 @@
+$component: '.Recipient';
+
+#{$component} {
+  align-items: center;
+  background: transparent;
+  border-radius: 6px;
+  cursor: default;
+  display: flex;
+  font-size: 14px;
+  font-weight: bold;
+  height: 28px;
+  padding-left: 8px;
+  transition: background-color .08s linear;
+
+  &:hover {
+    background: #EDEDED;
+
+    #{$component}-remove {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+
+  &-remove {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: 300;
+    opacity: 0;
+    outline: none;
+    padding: 0 8px;
+    visibility: hidden;
+    transition: all .08s linear;
+  }
+}
