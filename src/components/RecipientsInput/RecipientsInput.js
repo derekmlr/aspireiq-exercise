@@ -40,6 +40,16 @@ export default function RecipientsInput() {
   }
 
   /**
+   * Removes recipient from list and populates input with recipient text.
+   * @param recipient Recipient to edit.
+   */
+  const reviseRecipient = (recipient) => {
+    removeRecipient(recipient);
+    setCurrentValue(recipient);
+    setTimeout(() => inputRef.current.select(), 10);
+  }
+
+  /**
    * Listens to keypress and keydown
    * @param recipient Recipient text to add.
    */
@@ -54,7 +64,12 @@ export default function RecipientsInput() {
 
   return (
     <div className="RecipientsInput-container">
-    {recipients.map((recipient, index) => <Recipient key={index} value={recipient} remove={removeRecipient} />)}
+    {recipients.map((recipient, index) =>
+        <Recipient
+            key={index}
+            value={recipient}
+            remove={removeRecipient}
+            revise={reviseRecipient} />)}
       <div className="RecipientsInput-input-wrapper">
         <input
             ref={inputRef}
